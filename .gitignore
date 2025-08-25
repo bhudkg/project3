@@ -9,11 +9,7 @@ __pycache__/
 *$py.class
 *.so
 
-# Virtual environment
-venv/
-ENV/
-env.bak/
-venv.bak/
+
 
 # IDE files
 .vscode/

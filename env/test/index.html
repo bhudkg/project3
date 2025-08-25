@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Version Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h2>Host Versions for {{ table }}</h2>
+  <script id="versions-data" type="application/json">{{ versions|tojson }}</script>
+  <script id="counts-data" type="application/json">{{ counts|tojson }}</script>
+  <canvas id="versionChart"></canvas>
+
+  <script>
+    const versions = JSON.parse(document.getElementById('versions-data').textContent);
+    const counts = JSON.parse(document.getElementById('counts-data').textContent);
+    const ctx = document.getElementById('versionChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',  // or 'pie' / 'doughnut'
+      data: {
+        labels: versions,
+        datasets: [{
+          label: 'Number of Hosts',
+          data: counts,
+          backgroundColor: ['#ff6384','#36a2eb','#ffcd56','#4bc0c0']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: 'ESXi Host Versions' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+
+<!-- 
+The error in the template is that the variables `{{ versions|safe }}` and `{{ counts|safe }}` are being inserted directly into the JavaScript as-is. 
+If these are Python lists, Jinja will render them as Python list syntax (e.g., ['a', 'b', 'c']), which is not valid JavaScript array syntax. 
+To ensure correct JavaScript, use the `tojson` filter in Jinja2, which outputs valid JavaScript arrays/objects.
+
+Corrected code for the relevant lines:
+-->
+
+
+
